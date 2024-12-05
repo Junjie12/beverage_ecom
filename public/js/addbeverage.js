@@ -12,6 +12,14 @@ function addbeverage() {
     if (jsonData.name == "" || jsonData.image == "" || jsonData.price == "" || jsonData.category == "" || jsonData.description == "" || jsonData.rating == "" || jsonData.quantity == "") {
         document.getElementById("message").innerHTML = 'All fields are required!';
         document.getElementById("message").setAttribute("class", "text-danger");
+        alert('All fields are required!');
+        return;
+    }
+
+    if (jsonData.rating < 1 || jsonData.rating > 5) {
+        document.getElementById("message").innerHTML = 'Rating must be between 1 and 5.';
+        document.getElementById("message").setAttribute("class", "text-danger");
+        alert('Rating must be between 1 and 5.');
         return;
     }
 
@@ -35,9 +43,6 @@ function addbeverage() {
             document.getElementById("description").value = "";
             document.getElementById("rating").value = "";
             document.getElementById("quantity").value = "";     
-
-            
-            window.location.href = 'index.html';  
         } else {
             document.getElementById("message").innerHTML = 'Unable to add beverage!';
             document.getElementById("message").setAttribute("class", "text-danger");
@@ -47,26 +52,6 @@ function addbeverage() {
 
     // Send the data as a JSON object
     request.send(JSON.stringify(jsonData));
-}
-
-
-function openForm() {
-    var formContainer = document.getElementById("formContainer");
-    if (formContainer.style.display === "none" || formContainer.style.display === "") {
-      formContainer.style.display = "block";
-    } else {
-      formContainer.style.display = "none";
-    }
-  }
-
-  function openModal() {
-    document.getElementById("beverageModal").style.display = "flex";
-}
-
-// Close modal
-function closeModal() {
-    document.getElementById("beverageModal").style.display = "none";
-    
 }
 
 function previewImage() {
@@ -84,6 +69,4 @@ function previewImage() {
     }
     img.src = imageUrl;
 }
-
-
 
