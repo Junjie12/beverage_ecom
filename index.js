@@ -3,7 +3,7 @@ var bodyParser = require("body-parser");
 var app = express();
 
 
-const PORT = process.env.PORT || 5051;
+const PORT = process.env.PORT || 5052;
 var startPage = "index.html";
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
