@@ -22,43 +22,26 @@ async function writeJSON(object, filename) {
 }
 async function addbeverage(req, res) {
     try {
-        const name = req.body.name;
-        const image = req.body.image;
-        const price = req.body.price;
-        const category = req.body.category;
-        const description = req.body.description;
-        const rating = req.body.rating;
-        const quantity = req.body.quantity;
-        //check for price rating and quantity to be number
+        const { name, image, price, category, description, rating, quantity } = req.body;
+
+        // Check for missing required fields
+        if (!name || !image || !price || !category || !description || !rating || !quantity) {
+            return res.status(400).json({ message: "All fields are required." });
+        }
+
+        // Check for price, rating, and quantity to be numbers
         if (isNaN(price)) {
             return res.status(400).json({ message: "Price must be a number." });
         } else if (isNaN(rating)) {
-            return res
-                .status(400)
-                .json({ message: "Rating must be a number." });
+            return res.status(400).json({ message: "Rating must be a number." });
         } else if (rating < 1 || rating > 5) {
-            return res
-                .status(400)
-                .json({ message: "Rating must be between 1 and 5." }); //check for values of rating from 1-5
+            return res.status(400).json({ message: "Rating must be between 1 and 5." });
         } else if (isNaN(quantity)) {
-            return res
-                .status(400)
-                .json({ message: "quantity must be a number." });
+            return res.status(400).json({ message: "Quantity must be a number." });
         } else {
-            const newbeverage = new beverage(
-                name,
-                image,
-                price,
-                category,
-                description,
-                rating,
-                quantity
-            );
-            const updatedbeverages = await writeJSON(
-                newbeverage,
-                "utils/beverages.json"
-            );
-            return res.status(201).json(updatedbeverages);
+            const newbeverage = new beverage(name, image, price, category, description, rating, quantity);
+            const updatedbeverages = await writeJSON(newbeverage, "utils/beverages.json");
+            return res.status(201).json(newbeverage); // Return the newly added beverage object
         }
     } catch (error) {
         return res.status(500).json({ message: error.message });

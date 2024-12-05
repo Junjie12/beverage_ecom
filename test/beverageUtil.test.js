@@ -51,7 +51,7 @@ describe('Beverage API', () => {
                         'Price must be a number.',
                         'Rating must be a number.',
                         'Rating must be between 1 and 5.',
-                        'quantity must be a number.'
+                        'Quantity must be a number.'
                     ]);
                     done();
                 });
@@ -61,13 +61,13 @@ describe('Beverage API', () => {
             chai.request(baseUrl)
                 .post('/add-beverage')
                 .send({
-                    name: 'Test Beverage',
-                    image: 'test-image-url',
-                    price: 10,
-                    category: 'Test Category',
+                    name: 'coke',
+                    image: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.orderfreshmed.com%2Fproduct%2Fcoke-can%2F70&psig=AOvVaw1e18kBCcbP0b_90KVwTStC&ust=1731062756254000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCJiQz7aFyokDFQAAAAAdAAAAABAE',
+                    price: 1.50,
+                    category: 'soft drink',
                     description: 'Test Description',
                     rating: 4,
-                    quantity: 100
+                    quantity: 2
                 })
                 .end((err, res) => {
                     if (err) {
@@ -75,9 +75,9 @@ describe('Beverage API', () => {
                     }
                     console.log('Response body:', res.body); // Log the response body for debugging
                     expect(res).to.have.status(201);
-                    expect(res.body).to.be.an('array'); // Adjusted to expect an array
-                    expect(res.body.length).to.equal(count + 1); // Check if the array length increased by 1
-                    beverageId = res.body[res.body.length - 1].id; // Store the ID of the newly added resource
+                    expect(res.body).to.be.an('object'); // Adjusted to expect an object
+                    expect(res.body).to.have.property('id'); // Check if the response has an 'id' property
+                    beverageId = res.body.id; // Store the ID of the newly added resource
                     done();
                 });
         });
@@ -94,11 +94,7 @@ describe('Beverage API', () => {
                 })
                 .end((err, res) => {
                     expect(res).to.have.status(400);
-                    expect(res.body.message).to.be.oneOf([
-                        'Description is required.',
-                        'Rating is required.',
-                        'Quantity is required.'
-                    ]);
+                    expect(res.body.message).to.equal('All fields are required.');
                     done();
                 });
         });
