@@ -7,3 +7,8 @@ node_modules/
 # Build files
 dist/
 build/
+
+# Ignore NYC output
+.nyc_output/
+# Ignore coverage folder
+coverage/
